@@ -18,13 +18,12 @@ function isBreedWeights(data: any): data is BreedWeights {
         typeof (data.pug) === 'number' &&
         typeof (data.labrador) === 'number' &&
         typeof (data.hound) === 'number' &&
-        typeof (data.corgi) === 'number' &&
-        data.husky + data.pug + data.labrador + data.hound + data.corgi == 1
+        typeof (data.corgi) === 'number'
 }
 
 function selectBreedGivenWeights(weights: BreedWeights): DogBreed {
     const breeds: DogBreed[] = Object.keys(weights) as DogBreed[]
-    let random = Math.random();
+    let random = Math.random() * (weights.husky + weights.pug + weights.labrador + weights.hound + weights.corgi);
     for (let i = 0; i < Object.keys(weights).length; i++) {
         if (random < weights[breeds[i]]) {
             return breeds[i]
@@ -39,7 +38,12 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ImageData | InvalidRequest>
 ) {
-    const weights = req.body
+    if (req.body === "") {
+        res.status(400).json({
+            message: "bad data"
+        })
+    }
+    const weights = JSON.parse(req.body)
     if (!isBreedWeights(weights)) {
         res.status(400).json({
             message: "bad data"
@@ -63,5 +67,4 @@ export default function handler(
             "message": "success"
         })
     }
-
 }
