@@ -5,14 +5,9 @@ import Post from "../components/post";
 import { DogBreed, DogImage } from "../types/DogImage";
 import DogImages from "../json/DogImages.json"
 
-export default function MyFeed({ data }: { data: DogImage[] }) {
-    const [imgArray, setImgArray] = useState<DogImage[]>(data);
-    let likeInit = [];
-    for (let i = 0; i < data.length; i++) {
-        likeInit.push(false)
-    }
-
-    const [postLikes, setPostLikes] = useState<boolean[]>(likeInit)
+export default function MyFeed() {
+    const [imgArray, setImgArray] = useState<DogImage[]>([]);
+    const [postLikes, setPostLikes] = useState<boolean[]>([])
     const [breedWeights, setBreedWeights] = useState({
         "pug": 20,
         "husky": 20,
@@ -20,6 +15,40 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
         "hound": 20,
         "corgi": 20
     })
+
+    useEffect(() => {
+        function selectBreedEven(): DogBreed {
+            const breeds: DogBreed[] = ['corgi', 'husky', 'hound', 'labrador', 'pug'];
+            let random = Math.random();
+            for (let i = 0; i < breeds.length; i++) {
+                if (random < 1 / breeds.length) {
+                    return breeds[i]
+                } else {
+                    random -= 1 / breeds.length
+                }
+            }
+            throw "This shouldn't be reached"
+        }
+
+        let data = []
+
+        for (let i = 0; i < 10; i++) {
+            const breed: DogBreed = selectBreedEven();
+            const random = Math.floor(Math.random() * DogImages[breed].length + 1)
+            const url: string = DogImages[breed][random]
+            data.push({
+                "url": url,
+                "breed": breed
+            })
+        }
+        let likeInit = [];
+        for (let i = 0; i < data.length; i++) {
+            likeInit.push(false)
+        }
+
+        setImgArray(data);
+        setPostLikes(likeInit);
+    }, [])
 
     const onPostLikeChange = (index: number) => {
         const newArray = Array.from(postLikes);
@@ -41,7 +70,7 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
         if (increase) {
             breeds.forEach((breed) => {
                 if (breed === changedBreed && breedWeights[breed] !== 100) {
-                    breedWeightsCopy[breed] =  breedWeights[breed] + (4 - zeroCount);
+                    breedWeightsCopy[breed] = breedWeights[breed] + (4 - zeroCount);
                 } else if (breedWeights[breed] !== 0) {
                     breedWeightsCopy[breed] = breedWeights[breed] - 1;
                 } else {
@@ -80,7 +109,7 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
 
     }
 
-    return <Box sx={{ p: 1, pt: 2 }}>
+    return imgArray.length > 0 ? <Box sx={{ p: 1, pt: 2 }}>
         <Grid container spacing={3} >
             {imgArray.slice(0, imgArray.length - 5).map((item, index) => <>
                 <Grid item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
@@ -103,42 +132,5 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
             }
 
         </Grid>
-    </Box>
+    </Box> : null
 }
-
-export async function getServerSideProps() {
-
-    console.log(DogImages);
-
-    function selectBreedEven(): DogBreed {
-        const breeds: DogBreed[] = ['corgi', 'husky', 'hound', 'labrador', 'pug'];
-        let random = Math.random();
-        for (let i = 0; i < breeds.length; i++) {
-            if (random < 1 / breeds.length) {
-                return breeds[i]
-            } else {
-                random -= 1 / breeds.length
-            }
-        }
-        throw "This shouldn't be reached"
-    }
-
-    let data = []
-
-    for (let i = 0; i < 10; i++) {
-        const breed: DogBreed = selectBreedEven();
-        const random = Math.floor(Math.random() * DogImages[breed].length + 1)
-        const url: string = DogImages[breed][random]
-        data.push({
-            "url": url,
-            "breed": breed
-        })
-    }
-
-    console.log(data)
-    return { props: { data } }
-
-}
-
-/*        
-*/
