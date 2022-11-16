@@ -11,6 +11,7 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
     for (let i = 0; i < data.length; i++) {
         likeInit.push(false)
     }
+
     const [postLikes, setPostLikes] = useState<boolean[]>(likeInit)
     const [breedWeights, setBreedWeights] = useState({
         "pug": 20,
@@ -79,7 +80,6 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
 
     }
 
-    console.log(breedWeights)
     return <Box sx={{ p: 1, pt: 2 }}>
         <Grid container spacing={3} >
             {imgArray.slice(0, imgArray.length - 5).map((item, index) => <>
@@ -108,6 +108,8 @@ export default function MyFeed({ data }: { data: DogImage[] }) {
 
 export async function getServerSideProps() {
 
+    console.log(DogImages);
+
     function selectBreedEven(): DogBreed {
         const breeds: DogBreed[] = ['corgi', 'husky', 'hound', 'labrador', 'pug'];
         let random = Math.random();
@@ -133,7 +135,7 @@ export async function getServerSideProps() {
         })
     }
 
-
+    console.log(data)
     return { props: { data } }
 
 }

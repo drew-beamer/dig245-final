@@ -38,6 +38,7 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ImageData | InvalidRequest>
 ) {
+    console.log("received req")
     try {
         if (req.body === "") {
             res.status(400).json({
