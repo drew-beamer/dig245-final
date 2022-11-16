@@ -38,33 +38,43 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ImageData | InvalidRequest>
 ) {
-    if (req.body === "") {
-        res.status(400).json({
-            message: "bad data"
-        })
-    }
-    const weights = JSON.parse(req.body)
-    if (!isBreedWeights(weights)) {
-        res.status(400).json({
-            message: "bad data"
-        })
-    } else {
-
-        let images: DogImage[] = [];
-
-        for (let i = 0; i < 5; i++) {
-            const breed: DogBreed = selectBreedGivenWeights(weights);
-            const random = Math.floor(Math.random() * DogImages[breed].length + 1)
-            const url: string = DogImages[breed][random]
-            images.push({
-                "url": url,
-                "breed": breed
+    try {
+        if (req.body === "") {
+            res.status(400).json({
+                message: "bad data"
             })
         }
+        const weights = JSON.parse(req.body)
+        if (!isBreedWeights(weights)) {
+            res.status(400).json({
+                message: "bad data"
+            })
+        } else {
 
-        res.status(200).json({
-            "images": images,
-            "message": "success"
+            let images: DogImage[] = [];
+
+            for (let i = 0; i < 5; i++) {
+                const breed: DogBreed = selectBreedGivenWeights(weights);
+                const random = Math.floor(Math.random() * DogImages[breed].length + 1)
+                const url: string = DogImages[breed][random]
+                images.push({
+                    "url": url,
+                    "breed": breed
+                })
+            }
+
+            res.status(200).json({
+                "images": images,
+                "message": "success"
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            "message": "internal error"
         })
     }
+
+
+
 }
