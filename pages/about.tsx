@@ -12,13 +12,13 @@ export default function About() {
                     This site is intended to raise awareness about privacy on the web.
                     <br />
                     hound does not store any information outside of the session.
-                    Hound has no database and does not use cookie. While you're on the site, hound uses a React state to keep track of
+                    Hound has no database and does not use cookie. While you are on the site, hound uses a React state to keep track of
                     the current weights to get each image with, and then fetches images from our server using those weights.
 
                     <br />
                     No information that can be used to tie likes to a user is collected.
                     <br />
-                    We don't sell any information because, well, we have no information to sell.
+                    I do not sell any information because, well, I have no information to sell.
 
                 </p>
             </Grid>
