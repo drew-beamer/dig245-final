@@ -1,5 +1,5 @@
-import Link from "next/link";
 import styles from "./layout.module.css";
+import ResponsiveAppBar from "./navbar";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -8,9 +8,9 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
     return <>
         <div className={styles.navbar}>
-            <Link href="/about">About/Privacy</Link>
+            <ResponsiveAppBar />
         </div>
-        <main>{children}</main>
+        <main className={styles.content}>{children}</main>
         <div className={styles.footer}>
             
         </div>

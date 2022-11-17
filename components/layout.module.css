@@ -1,5 +1,11 @@
 
 .navbar {
     height: 65px;
-    background-color: teal;
+    background-color: #FCFBFB;
+    position: fixed;
+}
+
+.content {
+    position: relative;
+    top: 65px;
 }

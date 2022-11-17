@@ -1,54 +1,21 @@
 import { Grid, Box } from "@mui/material";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Waypoint } from "react-waypoint"
 import Post from "../components/post";
 import { DogBreed, DogImage } from "../types/DogImage";
-import DogImages from "../json/DogImages.json"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { getImages } from "./api/fetch-dogs";
 
-export default function MyFeed() {
-    const [imgArray, setImgArray] = useState<DogImage[]>([]);
-    const [postLikes, setPostLikes] = useState<boolean[]>([])
+export default function MyFeed({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [imgArray, setImgArray] = useState<DogImage[]>(data);
+    const [postLikes, setPostLikes] = useState<boolean[]>([false, false, false, false, false]);
     const [breedWeights, setBreedWeights] = useState({
         "pug": 20,
         "husky": 20,
         "labrador": 20,
         "hound": 20,
         "corgi": 20
-    })
-
-    useEffect(() => {
-        function selectBreedEven(): DogBreed {
-            const breeds: DogBreed[] = ['corgi', 'husky', 'hound', 'labrador', 'pug'];
-            let random = Math.random();
-            for (let i = 0; i < breeds.length; i++) {
-                if (random < 1 / breeds.length) {
-                    return breeds[i]
-                } else {
-                    random -= 1 / breeds.length
-                }
-            }
-            throw "This shouldn't be reached"
-        }
-
-        let data = []
-
-        for (let i = 0; i < 10; i++) {
-            const breed: DogBreed = selectBreedEven();
-            const random = Math.floor(Math.random() * DogImages[breed].length + 1)
-            const url: string = DogImages[breed][random]
-            data.push({
-                "url": url,
-                "breed": breed
-            })
-        }
-        let likeInit = [];
-        for (let i = 0; i < data.length; i++) {
-            likeInit.push(false)
-        }
-
-        setImgArray(data);
-        setPostLikes(likeInit);
-    }, [])
+    });
 
     const onPostLikeChange = (index: number) => {
         const newArray = Array.from(postLikes);
@@ -109,9 +76,9 @@ export default function MyFeed() {
 
     }
 
-    return imgArray.length > 0 ? <Box sx={{ p: 1, pt: 2 }}>
+    return imgArray.length > 0 ? <Box sx={{ pt: 2, px: 1 }}>
         <Grid container spacing={3} >
-            {imgArray.slice(0, imgArray.length - 5).map((item, index) => <>
+            {imgArray.slice(0, imgArray.length - 2).map((item, index) => <>
                 <Grid item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
                 <Grid item lg={4} md={6} sm={10} xs={12}>
                     <Post url={item.url} breed={item.breed} updateLike={onPostLikeChange} index={index} liked={postLikes[index]} />
@@ -120,7 +87,7 @@ export default function MyFeed() {
                 <Grid item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
             </>)}
             <Waypoint onEnter={loadFiveDogs} />
-            {imgArray.slice(imgArray.length - 5).map((item, index) => <>
+            {imgArray.slice(imgArray.length - 2).map((item, index) => <>
                 <Grid item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
                 <Grid item lg={4} md={6} sm={10} xs={12}>
                     <Post url={item.url} breed={item.breed} updateLike={onPostLikeChange} index={index} liked={postLikes[index]} />
@@ -128,9 +95,27 @@ export default function MyFeed() {
 
                 <Grid item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
             </>)
-
             }
-
         </Grid>
     </Box> : null
 }
+
+
+export const getServerSideProps: GetServerSideProps<{ data: DogImage[] }> = async (context) => {
+
+    const startingWeights = {
+        "hound": 20,
+        "corgi": 20,
+        "pug": 20,
+        "husky": 20,
+        "labrador": 20
+    };
+
+    const data = getImages(startingWeights);
+
+    return {
+        props: { data }
+    }
+}
+
+

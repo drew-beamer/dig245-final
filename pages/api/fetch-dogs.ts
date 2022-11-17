@@ -34,6 +34,21 @@ function selectBreedGivenWeights(weights: BreedWeights): DogBreed {
     throw "This shouldn't be reached"
 }
 
+export function getImages(weights: BreedWeights): DogImage[] {
+    let images: DogImage[] = [];
+
+    for (let i = 0; i < 5; i++) {
+        const breed: DogBreed = selectBreedGivenWeights(weights);
+        const random = Math.floor(Math.random() * DogImages[breed].length + 1)
+        const url: string = DogImages[breed][random]
+        images.push({
+            "url": url,
+            "breed": breed
+        })
+    }
+    return images
+}
+
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ImageData | InvalidRequest>
@@ -52,17 +67,7 @@ export default function handler(
             })
         } else {
 
-            let images: DogImage[] = [];
-
-            for (let i = 0; i < 5; i++) {
-                const breed: DogBreed = selectBreedGivenWeights(weights);
-                const random = Math.floor(Math.random() * DogImages[breed].length + 1)
-                const url: string = DogImages[breed][random]
-                images.push({
-                    "url": url,
-                    "breed": breed
-                })
-            }
+            let images = getImages(weights);
 
             res.status(200).json({
                 "images": images,
