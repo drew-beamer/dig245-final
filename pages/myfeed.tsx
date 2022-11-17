@@ -111,7 +111,33 @@ export const getServerSideProps: GetServerSideProps<{ data: DogImage[] }> = asyn
         "labrador": 20
     };
 
-    const data = getImages(startingWeights);
+    /*
+
+    */
+    //const data = getImages(startingWeights);
+
+    let data = [
+        {
+            "url": "https://images.dog.ceo/breeds/labrador/n02099712_4354.jpg",
+            "breed": "labrador"
+        },
+        {
+            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_6608.jpg",
+            "breed": "corgi"
+        },
+        {
+            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_12499.jpg",
+            "breed": "corgi"
+        },
+        {
+            "url": "https://images.dog.ceo/breeds/hound-english/n02089973_1841.jpg",
+            "breed": "hound"
+        },
+        {
+            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_11400.jpg",
+            "breed": "corgi"
+        }
+    ] as DogImage[]
 
     return {
         props: { data }
