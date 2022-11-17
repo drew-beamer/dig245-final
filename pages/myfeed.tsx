@@ -1,14 +1,15 @@
 import { Grid, Box } from "@mui/material";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Waypoint } from "react-waypoint"
 import Post from "../components/post";
 import { DogBreed, DogImage } from "../types/DogImage";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getImages } from "./api/fetch-dogs";
 
-export default function MyFeed() {
-    const [imgArray, setImgArray] = useState<DogImage[]>([]);
-    const [postLikes, setPostLikes] = useState<boolean[]>([]);
+export default function MyFeed({ images, message }: { images: DogImage[], message: string }) {
+    console.log(message);
+    const [imgArray, setImgArray] = useState<DogImage[]>(images);
+    const [postLikes, setPostLikes] = useState<boolean[]>([false, false, false, false, false]);
     const [breedWeights, setBreedWeights] = useState({
         "pug": 20,
         "husky": 20,
@@ -76,11 +77,6 @@ export default function MyFeed() {
 
     }
 
-    useEffect(() => {
-        loadFiveDogs();
-        setPostLikes([false, false, false, false, false])
-    }, [])
-
     return imgArray.length > 0 ? <Box sx={{ pt: 2, px: 1 }}>
         <Grid container spacing={3} >
             {imgArray.slice(0, imgArray.length - 2).map((item, index) => <>
@@ -103,5 +99,20 @@ export default function MyFeed() {
             }
         </Grid>
     </Box> : null
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    return {
+        props: {
+            images: getImages({
+                "corgi": 20,
+                "hound": 20,
+                "husky": 20,
+                "labrador": 20,
+                "pug": 20
+            }),
+            message: "fetched successfully"
+        }
+    }
 }
 
