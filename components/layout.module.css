@@ -1,6 +1,6 @@
 
 .navbar {
-    height: 65px;
+    height: 64px;
     background-color: #FCFBFB;
     position: fixed;
     z-index: 3000;
@@ -8,5 +8,5 @@
 
 .content {
     position: relative;
-    top: 65px;
+    top: 64px;
 }

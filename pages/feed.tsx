@@ -7,7 +7,7 @@ import { DogBreed, DogImage } from "../types/DogImage";
 import { GetServerSideProps } from "next";
 import { getImages } from "./api/fetch-dogs";
 
-export default function MyFeed({ images }: { images: DogImage[] }) {
+export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
     const [postLikes, setPostLikes] = useState<boolean[]>([]);
     const [breedWeights, setBreedWeights] = useState({
@@ -78,7 +78,7 @@ export default function MyFeed({ images }: { images: DogImage[] }) {
     }
 
     useEffect(() => {
-        setImgArray(images);
+        loadFiveDogs();
         setPostLikes([false, false, false, false, false])
     }, []);
 
@@ -102,21 +102,4 @@ export default function MyFeed({ images }: { images: DogImage[] }) {
             }
         </Grid>
     </Box> : null
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    // ...
-
-    let images: DogImage[] = getImages({
-        "corgi": 20,
-        "hound": 20,
-        "husky": 20,
-        "labrador": 20,
-        "pug": 20
-    })
-    return {
-        props: {
-            images: images
-        }, // will be passed to the page component as props
-    }
 }
