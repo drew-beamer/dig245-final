@@ -66,7 +66,7 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map((page) => (
-                                <Link href={router.pathname === "Home" ? "/" : `/${page.toLowerCase()}`} className={styles.navbutton}>
+                                <Link key={page} href={router.pathname === "Home" ? "/" : `/${page.toLowerCase()}`} className={styles.navbutton}>
                                     <MenuItem key={page} onClick={() => {
                                         handleCloseNavMenu();
                                     }}>
@@ -91,7 +91,7 @@ function ResponsiveAppBar() {
                     <Box sx={{ width: "100%", display: { xs: 'none', sm: 'flex' }, justifyContent: "flex-end" }}>
                         {pages.map((page) => {
                             const active = ((page === 'Home' && router.pathname === "/") || "/" + page.toLowerCase() === router.pathname);
-                            return <Link href={page === "Home" ? "/" : `/${page.toLowerCase()}`} className={active ? `activeLink ${styles.navButton}` : `inactiveLink ${styles.navButton}`}>
+                            return <Link key={page} href={page === "Home" ? "/" : `/${page.toLowerCase()}`} className={active ? `activeLink ${styles.navButton}` : `inactiveLink ${styles.navButton}`}>
                                 <Typography
                                     key={page}
                                     className={active ? "activeLink" : "inactiveLink"}
