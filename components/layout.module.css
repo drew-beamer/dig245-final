@@ -3,6 +3,7 @@
     height: 65px;
     background-color: #FCFBFB;
     position: fixed;
+    z-index: 3000;
 }
 
 .content {

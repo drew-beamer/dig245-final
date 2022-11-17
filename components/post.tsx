@@ -18,7 +18,7 @@ export default function Post({ url, breed, updateLike, liked, index }: PostProps
     const [doubleClickLikeShow, setDoubleClickLikeShow] = useState(false);
 
     const styledBreed = breed.charAt(0).toUpperCase() + breed.slice(1);
-    return <Box>
+    return <Box sx={{zIndex: 0}}>
         <Box>
             <Image className={styles.postImage} layout="responsive" width={300} height={200} src={url} alt={`${breed}`} onClick={(e) => {
                 if (e.detail == 2) {
