@@ -1,14 +1,14 @@
 import { Grid, Box } from "@mui/material";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Waypoint } from "react-waypoint"
 import Post from "../components/post";
 import { DogBreed, DogImage } from "../types/DogImage";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getImages } from "./api/fetch-dogs";
 
-export default function MyFeed({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    const [imgArray, setImgArray] = useState<DogImage[]>(data);
-    const [postLikes, setPostLikes] = useState<boolean[]>([false, false, false, false, false]);
+export default function MyFeed() {
+    const [imgArray, setImgArray] = useState<DogImage[]>([]);
+    const [postLikes, setPostLikes] = useState<boolean[]>([]);
     const [breedWeights, setBreedWeights] = useState({
         "pug": 20,
         "husky": 20,
@@ -76,6 +76,11 @@ export default function MyFeed({ data }: InferGetServerSidePropsType<typeof getS
 
     }
 
+    useEffect(() => {
+        loadFiveDogs();
+        setPostLikes([false, false, false, false, false])
+    }, [])
+
     return imgArray.length > 0 ? <Box sx={{ pt: 2, px: 1 }}>
         <Grid container spacing={3} >
             {imgArray.slice(0, imgArray.length - 2).map((item, index) => <>
@@ -99,49 +104,4 @@ export default function MyFeed({ data }: InferGetServerSidePropsType<typeof getS
         </Grid>
     </Box> : null
 }
-
-
-export const getServerSideProps: GetServerSideProps<{ data: DogImage[] }> = async (context) => {
-
-    const startingWeights = {
-        "hound": 20,
-        "corgi": 20,
-        "pug": 20,
-        "husky": 20,
-        "labrador": 20
-    };
-
-    /*
-
-    */
-    //const data = getImages(startingWeights);
-
-    let data = [
-        {
-            "url": "https://images.dog.ceo/breeds/labrador/n02099712_4354.jpg",
-            "breed": "labrador"
-        },
-        {
-            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_6608.jpg",
-            "breed": "corgi"
-        },
-        {
-            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_12499.jpg",
-            "breed": "corgi"
-        },
-        {
-            "url": "https://images.dog.ceo/breeds/hound-english/n02089973_1841.jpg",
-            "breed": "hound"
-        },
-        {
-            "url": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_11400.jpg",
-            "breed": "corgi"
-        }
-    ] as DogImage[]
-
-    return {
-        props: { data }
-    }
-}
-
 
