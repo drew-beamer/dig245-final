@@ -18,13 +18,12 @@ function isBreedWeights(data: any): data is BreedWeights {
         typeof (data.pug) === 'number' &&
         typeof (data.labrador) === 'number' &&
         typeof (data.hound) === 'number' &&
-        typeof (data.corgi) === 'number' &&
-        data.husky + data.pug + data.labrador + data.hound + data.corgi == 1
+        typeof (data.corgi) === 'number'
 }
 
 function selectBreedGivenWeights(weights: BreedWeights): DogBreed {
     const breeds: DogBreed[] = Object.keys(weights) as DogBreed[]
-    let random = Math.random();
+    let random = Math.random() * (weights.husky + weights.pug + weights.labrador + weights.hound + weights.corgi);
     for (let i = 0; i < Object.keys(weights).length; i++) {
         if (random < weights[breeds[i]]) {
             return breeds[i]
@@ -35,33 +34,53 @@ function selectBreedGivenWeights(weights: BreedWeights): DogBreed {
     throw "This shouldn't be reached"
 }
 
+export function getImages(weights: BreedWeights): DogImage[] {
+    let images: DogImage[] = [];
+
+    for (let i = 0; i < 5; i++) {
+        const breed: DogBreed = selectBreedGivenWeights(weights);
+        const random = Math.floor(Math.random() * DogImages[breed].length + 1)
+        const url: string = DogImages[breed][random]
+        images.push({
+            "url": url,
+            "breed": breed
+        })
+    }
+    return images
+}
+
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<ImageData | InvalidRequest>
 ) {
-    const weights = req.body
-    if (!isBreedWeights(weights)) {
-        res.status(400).json({
-            message: "bad data"
-        })
-    } else {
-
-        let images: DogImage[] = [];
-
-        for (let i = 0; i < 5; i++) {
-            const breed: DogBreed = selectBreedGivenWeights(weights);
-            const random = Math.floor(Math.random() * DogImages[breed].length + 1)
-            const url: string = DogImages[breed][random]
-            images.push({
-                "url": url,
-                "breed": breed
+    console.log("received req")
+    try {
+        if (req.body === "") {
+            res.status(400).json({
+                message: "bad data"
             })
         }
+        const weights = JSON.parse(req.body)
+        if (!isBreedWeights(weights)) {
+            res.status(400).json({
+                message: "bad data"
+            })
+        } else {
 
-        res.status(200).json({
-            "images": images,
-            "message": "success"
+            let images = getImages(weights);
+
+            res.status(200).json({
+                "images": images,
+                "message": "success"
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            "message": "internal error"
         })
     }
+
+
 
 }

@@ -1,8 +1,10 @@
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home({ message }: { message: string }) {
+  console.log(message)
   return (
     <div className={styles.container}>
       <Head>
@@ -68,4 +70,12 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // ...
+  return {
+    props: {
+      message: "test"
+    }, // will be passed to the page component as props
+  }
 }
