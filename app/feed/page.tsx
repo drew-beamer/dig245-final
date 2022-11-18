@@ -1,9 +1,10 @@
+'use client';
 import React from "react";
-import { Grid, Box } from "@mui/material";
 import { useEffect, useState } from "react"
 import { Waypoint } from "react-waypoint"
 import Post from "../../components/post";
 import { DogBreed, DogImage } from "../../types/DogImage";
+import { Container, Row, Col } from "react-bootstrap";
 
 export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
@@ -80,24 +81,26 @@ export default function MyFeed() {
         setPostLikes([false, false, false, false, false])
     }, []);
 
-    return imgArray.length > 0 ? <Box sx={{ pt: 2, px: 1 }}>
-        <Grid container spacing={3} sx={{ position: "relative", zIndex: 0 }}>
-            {imgArray.slice(0, imgArray.length - 2).map((item, index) => <React.Fragment key={index}>
-                <Grid key={`LeftGrid${index}`} item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
-                <Grid key={`CenterGrid${index}`} item lg={4} md={6} sm={10} xs={12}>
-                    <Post url={item.url} breed={item.breed} updateLike={onPostLikeChange} index={index} liked={postLikes[index]} />
-                </Grid>
-                <Grid key={`RightGrid${index}`} item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
-            </React.Fragment>)}
+    function postsFromDogImageArray(array: DogImage[], keyStartIndex: number) {
+        return array.map((item, index) => <Row key={index + keyStartIndex}>
+            <Col xs={0} sm={1} md={3} lg={4}></Col>
+            <Col xs={12} sm={10} md={6} lg={4}>
+                <Post url={item.url} breed={item.breed} updateLike={onPostLikeChange} index={index} liked={postLikes[index]} />
+            </Col>
+            <Col xs={0} sm={1} md={3} lg={4}></Col>
+        </Row>)
+    }
+
+    return imgArray.length > 0 ? <div>
+        <Container fluid>
+            {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
-            {imgArray.slice(imgArray.length - 2).map((item, index) => <React.Fragment key={index}>
-                <Grid key={`LeftGrid${index + imgArray.length - 2}`} item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
-                <Grid key={`CenterGrid${index + imgArray.length - 2}`} item lg={4} md={6} sm={10} xs={12}>
-                    <Post url={item.url} breed={item.breed} updateLike={onPostLikeChange} index={index} liked={postLikes[index]} />
-                </Grid>
-                <Grid key={`RightGrid${index + imgArray.length - 2}`} item lg={4} md={3} sm={1} sx={{ display: { xs: "none", sm: "grid" } }}></Grid>
-            </React.Fragment>)
-            }
-        </Grid>
-    </Box> : null
+            {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)}
+        </Container>
+    </div > : null
 }
+
+
+/*
+            <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
+            {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)} */

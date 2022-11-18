@@ -20,7 +20,7 @@ function Navbutton({ text, href }: NavbuttonProps) {
     const isActive = href === location ? "activeLink" : "inactiveLink";
     return <Link href={href} className={`${styles.button} ${isActive}`}>
         <div>
-            <h4 className={isActive}>{text}</h4>
+            <h5 className={isActive}>{text}</h5>
         </div>
     </Link>
 }
