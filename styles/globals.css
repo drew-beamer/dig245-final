@@ -1,10 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap');
 
-html, body {
+:root {
+  --primary-offwhite: #FCFBFB;
+  --primary-teal: #4AAEC0;
+  --secondary-smokyblue: #9BB9BF;
+  --secondary-charcoal: #333;
+}
+
+html,
+body {
   padding: 0;
   margin: 0;
   font-family: Outfit, sans-serif;
-  background-color: #FCFBFB;
+  background-color: var(--primary-offwhite);
+}
+
+h1 {
+  font-size: 72px;
+}
+
+h2 {
+  font-size: 48px;
+}
+
+h3 {
+  font-size: 36px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h3, h4 {
+  color: var(--primary-teal);
+}
+
+button {
+  font-size: 28px;
 }
 
 .post {
@@ -13,18 +45,20 @@ html, body {
 
 .activeLink {
   text-decoration: none;
-  color: #4AAEC0 !important;
+  color: var(--primary-teal) !important;
 }
 
 .inactiveLink {
   text-decoration: none;
-  color: #333 !important;
+  color: var(--secondary-charcoal) !important;
 }
 
-.activeLink, .inactiveLink {
+.activeLink,
+.inactiveLink {
   transition: 0.3s ease;
 }
 
-.activeLink:hover, .inactiveLink:hover {
-  color: #9BB9BF !important;
+.activeLink:hover,
+.inactiveLink:hover {
+  color: var(--secondary-smokyblue) !important;
 }

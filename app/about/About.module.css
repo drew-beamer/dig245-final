@@ -1,0 +1,10 @@
+
+.contentHolder {
+    padding-top: 25px;
+}
+
+.contentHolderRow {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

@@ -1,0 +1,21 @@
+
+.navContainer {
+    height: 60px;
+    background-color: var(--primary-offwhite);
+    display: flex;
+    position: fixed;
+    align-items: center;
+    z-index: 1;
+    width: calc(100% - 40px);
+    margin: 0px 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.button {
+    margin-left: 15px;
+}

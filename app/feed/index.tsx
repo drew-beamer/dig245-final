@@ -2,10 +2,8 @@ import React from "react";
 import { Grid, Box } from "@mui/material";
 import { useEffect, useState } from "react"
 import { Waypoint } from "react-waypoint"
-import Post from "../components/post";
-import { DogBreed, DogImage } from "../types/DogImage";
-import { GetServerSideProps } from "next";
-import { getImages } from "./api/fetch-dogs";
+import Post from "../../components/post";
+import { DogBreed, DogImage } from "../../types/DogImage";
 
 export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
