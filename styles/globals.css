@@ -11,7 +11,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Outfit, sans-serif;
+  font-family: Outfit, sans-serif !important;
   background-color: var(--primary-offwhite);
 }
 
