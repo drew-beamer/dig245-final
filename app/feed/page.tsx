@@ -10,11 +10,11 @@ export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
     const [postLikes, setPostLikes] = useState<boolean[]>([]);
     const [breedWeights, setBreedWeights] = useState({
-        "pug": 20,
-        "husky": 20,
-        "labrador": 20,
-        "hound": 20,
-        "corgi": 20
+        "pug": 1,
+        "husky": 1,
+        "labrador": 1,
+        "hound": 1,
+        "corgi": 1
     });
 
     const onPostLikeChange = (index: number) => {
@@ -25,35 +25,12 @@ export default function MyFeed() {
     }
 
     const updateBreedWeights = (changedBreed: DogBreed, increase: boolean) => {
-        const breeds = Object.keys(breedWeights) as DogBreed[]
-        let breedWeightsCopy = {} as typeof breedWeights
-
-        let zeroCount = 0
-        breeds.forEach((breed) => {
-            if (breedWeights[breed] === 0) {
-                zeroCount += 1
-            }
-        })
+        let breedWeightsCopy = {...breedWeights};
         if (increase) {
-            breeds.forEach((breed) => {
-                if (breed === changedBreed && breedWeights[breed] !== 100) {
-                    breedWeightsCopy[breed] = breedWeights[breed] + (4 - zeroCount);
-                } else if (breedWeights[breed] !== 0) {
-                    breedWeightsCopy[breed] = breedWeights[breed] - 1;
-                } else {
-                    breedWeightsCopy[breed] = 0;
-                }
-            })
+            breedWeightsCopy[changedBreed] += 1;
         } else {
-            breeds.forEach((breed) => {
-                if (breed === changedBreed && breedWeights[changedBreed] >= 4) {
-                    breedWeightsCopy[breed] = breedWeights[breed] - 4
-                } else if (breedWeights[changedBreed] >= 4) {
-                    breedWeightsCopy[breed] = breedWeights[breed] + 1
-                }
-            })
+            breedWeightsCopy[changedBreed] -= 1;
         }
-
         setBreedWeights(breedWeightsCopy)
     }
 
@@ -90,7 +67,6 @@ export default function MyFeed() {
             <Col xs={0} sm={1} md={3} lg={4}></Col>
         </Row>)
     }
-
     return imgArray.length > 0 ? <div>
         <Container fluid>
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}

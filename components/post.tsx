@@ -19,8 +19,6 @@ export default function Post({ url, breed, updateLike, liked, index }: PostProps
 
     const styledBreed = breed.charAt(0).toUpperCase() + breed.slice(1);
 
-    console.log(doubleClickLikeShow)
-
     return <div className={styles.postContainer}>
         <div className={styles.doubleClickIconContainer}>
             {doubleClickLikeShow ? <HeartFill size={96} className={`${styles.animate} ${styles.pop} ${styles.doubleClickHeart}`} onAnimationEnd={() => setDoubleClickLikeShow(false)} /> : null}
@@ -38,13 +36,10 @@ export default function Post({ url, breed, updateLike, liked, index }: PostProps
         </div >
         <div className={styles.imageDataHolder}>
             {liked ? <HeartFill size={iconSize} className={`${styles.animate} ${styles.pop} ${styles.blueFill} ${styles.clickableIcon}`} onClick={() => {
-                console.log("weight decreasing");
                 updateLike(index)
 
             }} /> : <Heart size={iconSize} className={styles.clickableIcon} onClick={() => {
-                console.log("weight increasing")
                 updateLike(index)
-                console.log("here")
 
             }} />}
             <h4>{`${styledBreed}`}</h4>
