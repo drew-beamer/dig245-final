@@ -5,6 +5,12 @@ import { Waypoint } from "react-waypoint"
 import Post from "../../components/post";
 import { DogBreed, DogImage } from "../../types/DogImage";
 import { Container, Row, Col } from "react-bootstrap";
+import Popup from "../../components/popup";
+import { Bar } from "react-chartjs-2";
+
+// getting some a weird unmount error, solution found: https://stackoverflow.com/questions/68100325/canvas-is-already-in-use-chart-with-id-0-must-be-destroyed-before-the-canvas
+import "chart.js/auto";
+import Navbar from "../../components/navbar";
 
 export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
@@ -16,6 +22,11 @@ export default function MyFeed() {
         "hound": 1,
         "corgi": 1
     });
+    const [popupShow, setPopupShow] = useState(false);
+
+    const handlePopupClose = () => {
+        setPopupShow(false)
+    }
 
     const onPostLikeChange = (index: number) => {
         const newArray = Array.from(postLikes);
@@ -25,7 +36,7 @@ export default function MyFeed() {
     }
 
     const updateBreedWeights = (changedBreed: DogBreed, increase: boolean) => {
-        let breedWeightsCopy = {...breedWeights};
+        let breedWeightsCopy = { ...breedWeights };
         if (increase) {
             breedWeightsCopy[changedBreed] += 1;
         } else {
@@ -55,7 +66,8 @@ export default function MyFeed() {
 
     useEffect(() => {
         loadFiveDogs();
-        setPostLikes([false, false, false, false, false])
+        setPostLikes([false, false, false, false, false]);
+        setPopupShow(true);
     }, []);
 
     function postsFromDogImageArray(array: DogImage[], keyStartIndex: number) {
@@ -68,6 +80,53 @@ export default function MyFeed() {
         </Row>)
     }
     return imgArray.length > 0 ? <div>
+        <Navbar />
+        {popupShow ? <Popup closeFunction={handlePopupClose}>
+            <Row>
+                <Col xs={12}>
+                    <h3 style={{ color: "#333" }}>My Stats</h3>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12} md={5}>
+                    <p>Wow...you really like Hounds!
+
+                        You  probably picked up on it by now...Hound isn’t real. Hound exists to illustrate just how quickly social media algorithms can create “filter bubbles,” or show you only content that you agree with or like.  The bar chart to shows your total number of likes by each of the five dogs present in the app, while the pie chart shows the frequency at which breeds of dogs were being fetched as new images were loaded in.
+                    </p>
+                </Col>
+                <Col xs={12} md={7}>
+                    <div style={{ width: "100%", height: "234px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Bar id="like-distribution" options={{
+                            plugins: {
+                                legend: {
+                                    position: "bottom"
+                                }
+                            },
+                            indexAxis: 'y' as const,
+                            responsive: true,
+                        }} data={{
+                            labels: ["Hounds", "Huskys", "Corgis", "Pugs", "Labradors"],
+                            datasets: [{
+                                label: "Total Likes",
+                                data: [15, 12, 6, 3, 1]
+                            }]
+                        }} />
+                    </div>
+
+                </Col>
+            </Row>
+            <Row style={{ marginTop: "30px" }}>
+                <Col xs={12} md={7}>
+                    <p>chart will go here</p>
+                </Col>
+                <Col xs={12} md={5}>
+
+                    <p>The algorithm I am using is very simple. Bigger social networks utilize other user data in order to recommend new content. However, I can’t do that, as Hound does not have a database. So I use the relative percentage of your likes from the current session as “weights.”
+
+                        The numbers in the pie chart can be attained by adding one to the number of likes for each of the breeds, and then dividing the number for one breed by the sum for all breeds.</p>
+                </Col>
+            </Row>
+        </Popup> : null}
         <Container fluid>
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
@@ -80,3 +139,9 @@ export default function MyFeed() {
 /*
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
             {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)} */
+
+/*
+
+
+
+*/
