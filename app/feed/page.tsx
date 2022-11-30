@@ -6,11 +6,88 @@ import Post from "../../components/post";
 import { DogBreed, DogImage } from "../../types/DogImage";
 import { Container, Row, Col } from "react-bootstrap";
 import Popup from "../../components/popup";
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 
 // getting some a weird unmount error, solution found: https://stackoverflow.com/questions/68100325/canvas-is-already-in-use-chart-with-id-0-must-be-destroyed-before-the-canvas
 import "chart.js/auto";
 import Navbar from "../../components/navbar";
+import { BreedWeights } from "../../types/BreedWeights";
+
+interface LikeBarProps {
+    breedWeights: BreedWeights;
+}
+
+type SortableWeight = [DogBreed, number]
+
+
+function sortableWeightsFromBreedWeights(breedWeights: BreedWeights): SortableWeight[] {
+    // https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
+    let sortableWeights = [] as SortableWeight[];
+    for (var breed in breedWeights) {
+        sortableWeights.push([breed as DogBreed, breedWeights[breed as DogBreed]]);
+    }
+
+    sortableWeights.sort((a, b) => {
+        return b[1] - a[1];
+    });
+
+    return sortableWeights;
+}
+
+
+function LikeBarChart({ breedWeights }: LikeBarProps) {
+    const sortableWeights = sortableWeightsFromBreedWeights(breedWeights);
+    const labels = sortableWeights.map((weight) => weight[0]);
+    const likes = sortableWeights.map((weight) => weight[1] - 1);
+    return <div style={{ width: "100%", height: "234px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Bar id="like-distribution" options={{
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            },
+            indexAxis: 'y' as const,
+            responsive: true,
+        }} data={{
+            labels: labels,
+            datasets: [{
+                label: "Total Likes",
+                data: likes
+            }]
+        }} />
+    </div>
+}
+
+function FrequencyPieChart({ breedWeights }: { breedWeights: BreedWeights }) {
+    const total = Object.values(breedWeights).reduce((a, b) => a + b);
+    const sortableWeights = sortableWeightsFromBreedWeights(breedWeights);
+    const labels = sortableWeights.map((weight) => weight[0]);
+    const percentages = sortableWeights.map((weight) => Math.round(100 * weight[1] / total))
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Current % of New Images",
+                data: percentages,
+                borderWidth: 1
+            }
+        ]
+    }
+
+    return <div style={{ width: "100%", height: "234px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Pie options={{
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "right"
+                }
+            },
+ maintainAspectRatio: false}
+        } data={data} height={"100%"} width={"100%"}/>
+    </div>
+}
+
+
 
 export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
@@ -67,7 +144,11 @@ export default function MyFeed() {
     useEffect(() => {
         loadFiveDogs();
         setPostLikes([false, false, false, false, false]);
-        setPopupShow(true);
+
+        setTimeout(() => {
+            setPopupShow(true);
+        }, 120000);
+
     }, []);
 
     function postsFromDogImageArray(array: DogImage[], keyStartIndex: number) {
@@ -79,6 +160,7 @@ export default function MyFeed() {
             <Col xs={0} sm={1} md={3} lg={4}></Col>
         </Row>)
     }
+
     return imgArray.length > 0 ? <div>
         <Navbar />
         {popupShow ? <Popup closeFunction={handlePopupClose}>
@@ -89,44 +171,22 @@ export default function MyFeed() {
             </Row>
             <Row>
                 <Col xs={12} md={5}>
-                    <p>Wow...you really like Hounds!
-
-                        You  probably picked up on it by now...Hound isn’t real. Hound exists to illustrate just how quickly social media algorithms can create “filter bubbles,” or show you only content that you agree with or like.  The bar chart to shows your total number of likes by each of the five dogs present in the app, while the pie chart shows the frequency at which breeds of dogs were being fetched as new images were loaded in.
-                    </p>
+                    <p>You probably picked up on it by now...Hound is not real. Hound exists to illustrate just how quickly social media algorithms can create {"\""}filter bubbles,{"\""} or show you only content that you agree with or like.  The bar chart to shows your total number of likes by each of the five dogs present in the app, while the pie chart shows the frequency at which breeds of dogs were being fetched as new images were loaded in.</p>
                 </Col>
                 <Col xs={12} md={7}>
-                    <div style={{ width: "100%", height: "234px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Bar id="like-distribution" options={{
-                            plugins: {
-                                legend: {
-                                    position: "bottom"
-                                }
-                            },
-                            indexAxis: 'y' as const,
-                            responsive: true,
-                        }} data={{
-                            labels: ["Hounds", "Huskys", "Corgis", "Pugs", "Labradors"],
-                            datasets: [{
-                                label: "Total Likes",
-                                data: [15, 12, 6, 3, 1]
-                            }]
-                        }} />
-                    </div>
-
+                    <LikeBarChart breedWeights={breedWeights} />
                 </Col>
             </Row>
-            <Row style={{ marginTop: "30px" }}>
-                <Col xs={12} md={7}>
-                    <p>chart will go here</p>
+            <Row >
+                <Col xs={12} md={7} style={{ marginTop: "30px" }}>
+                    <FrequencyPieChart breedWeights={breedWeights} />
                 </Col>
-                <Col xs={12} md={5}>
-
-                    <p>The algorithm I am using is very simple. Bigger social networks utilize other user data in order to recommend new content. However, I can’t do that, as Hound does not have a database. So I use the relative percentage of your likes from the current session as “weights.”
-
-                        The numbers in the pie chart can be attained by adding one to the number of likes for each of the breeds, and then dividing the number for one breed by the sum for all breeds.</p>
+                <Col xs={12} md={5} style={{ marginTop: "30px" }}>
+                    <p>The algorithm I am using is very simple. Bigger social networks utilize other user data in order to recommend new content. However, I cannot do that, as Hound does not have a database. So I use the relative percentage of your likes from the current session as weights.<br />The numbers in the pie chart can be attained by adding one to the number of likes for each of the breeds, and then dividing the number for one breed by the sum for all breeds.</p>
                 </Col>
             </Row>
         </Popup> : null}
+        <button onClick={() => setPopupShow(true)}>show dash</button>
         <Container fluid>
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
