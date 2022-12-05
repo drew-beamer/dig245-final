@@ -147,7 +147,7 @@ export default function MyFeed() {
 
         setTimeout(() => {
             setPopupShow(true);
-        }, 120000);
+        }, 60000);
 
     }, []);
 
@@ -186,7 +186,6 @@ export default function MyFeed() {
                 </Col>
             </Row>
         </Popup> : null}
-        <button onClick={() => setPopupShow(true)}>show dash</button>
         <Container fluid>
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
