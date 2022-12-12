@@ -5,7 +5,6 @@ import styles from "./Home.module.css";
 
 
 export default function Home() {
-
   return <div>
     <Container fluid className={styles.heroContainer}>
       <Row className={styles.heroContainerRow}>

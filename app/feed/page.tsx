@@ -7,11 +7,13 @@ import { DogBreed, DogImage } from "../../types/DogImage";
 import { Container, Row, Col } from "react-bootstrap";
 import Popup from "../../components/popup";
 import { Bar, Pie } from "react-chartjs-2";
+import styles from "./Feed.module.css";
 
 // getting some a weird unmount error, solution found: https://stackoverflow.com/questions/68100325/canvas-is-already-in-use-chart-with-id-0-must-be-destroyed-before-the-canvas
 import "chart.js/auto";
 import Navbar from "../../components/navbar";
 import { BreedWeights } from "../../types/BreedWeights";
+import { BarChartFill } from "react-bootstrap-icons";
 
 interface LikeBarProps {
     breedWeights: BreedWeights;
@@ -82,8 +84,9 @@ function FrequencyPieChart({ breedWeights }: { breedWeights: BreedWeights }) {
                     position: "right"
                 }
             },
- maintainAspectRatio: false}
-        } data={data} height={"100%"} width={"100%"}/>
+            maintainAspectRatio: false
+        }
+        } data={data} height={"100%"} width={"100%"} />
     </div>
 }
 
@@ -92,6 +95,7 @@ function FrequencyPieChart({ breedWeights }: { breedWeights: BreedWeights }) {
 export default function MyFeed() {
     const [imgArray, setImgArray] = useState<DogImage[]>([]);
     const [postLikes, setPostLikes] = useState<boolean[]>([]);
+    const [secondsElapsedSinceLoad, setSecondsElapsedSinceLoad] = useState(0);
     const [breedWeights, setBreedWeights] = useState({
         "pug": 1,
         "husky": 1,
@@ -151,6 +155,15 @@ export default function MyFeed() {
 
     }, []);
 
+    useEffect(() => {
+        if (secondsElapsedSinceLoad < 60) {
+            setTimeout(() => {
+                setSecondsElapsedSinceLoad(secondsElapsedSinceLoad + 1);
+            }, 1000)
+        }
+
+    }, [secondsElapsedSinceLoad]);
+
     function postsFromDogImageArray(array: DogImage[], keyStartIndex: number) {
         return array.map((item, index) => <Row key={index + keyStartIndex}>
             <Col xs={0} sm={1} md={3} lg={4}></Col>
@@ -163,6 +176,13 @@ export default function MyFeed() {
 
     return imgArray.length > 0 ? <div>
         <Navbar />
+        <div className={styles.progressBarWrapper}>
+            <div className={styles.progressBarContainer}>
+                <div className={styles.progressBar} style={{ width: `${100 * secondsElapsedSinceLoad / 60}%` }}>
+                </div>
+            </div>
+        </div>
+
         {popupShow ? <Popup closeFunction={handlePopupClose}>
             <Row>
                 <Col xs={12}>
@@ -186,11 +206,16 @@ export default function MyFeed() {
                 </Col>
             </Row>
         </Popup> : null}
-        <Container fluid>
+        <Container fluid style={{ marginTop: "20px" }}>
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
             {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)}
+
         </Container>
+
+        <div className={styles.showDashboardButton} onClick={() => setPopupShow(true)} style={{display: secondsElapsedSinceLoad >= 60 ? "flex" : "none"}}>
+            <BarChartFill className={styles.showDashboardButtonIcon}/>
+        </div>
     </div > : null
 }
 

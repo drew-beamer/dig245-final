@@ -1,0 +1,47 @@
+
+.progressBarWrapper {
+    background-color: var(--primary-offwhite);
+    top: 60px;
+    height: 30px;
+    position: fixed;
+    width: calc(100% - 40px);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progressBarContainer {
+    height: 10px;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.progressBar {
+    background-color: var(--primary-teal);
+    height: 10px;
+    border-radius: 20px;
+    transition: 1s linear;
+}
+
+.showDashboardButton {
+    background-color: var(--primary-teal);
+    height: 70px;
+    width: 70px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 70px;
+    justify-content: center;
+    align-items: center;
+}
+
+.showDashboardButtonIcon {
+    font-size: 36px;
+    fill: var(--primary-offwhite)
+}
+
+.showDashboardButton:hover {
+    cursor: pointer;
+}
