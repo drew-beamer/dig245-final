@@ -18,15 +18,14 @@ export default function About() {
                     Hound has no database and does not use cookie. While you are on the site, hound uses a React state to keep track of
                     the current weights to get each image with, and then fetches images from our server using those weights.
 
-                    <br />
+                    <br /><br />
                     No information that can be used to tie likes to a user is collected.
-                    <br />
+                    <br /><br />
                     I do not sell any information because, well, I have no information to sell.
 
                 </p>
             </Col>
             <Col xs={10} md={4}>
-                to be determined thing here
             </Col>
         </Row>
     </Container>

@@ -207,22 +207,24 @@ export default function MyFeed() {
             </Row>
         </Popup> : null}
         <Container fluid style={{ marginTop: "20px" }}>
+
             {postsFromDogImageArray(imgArray.slice(0, imgArray.length - 2), 0)}
             <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
             {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)}
-
         </Container>
 
-        <div className={styles.showDashboardButton} onClick={() => setPopupShow(true)} style={{display: secondsElapsedSinceLoad >= 60 ? "flex" : "none"}}>
-            <BarChartFill className={styles.showDashboardButtonIcon}/>
+
+
+        <div className={styles.showDashboardButton} onClick={() => setPopupShow(true)} style={{ display: secondsElapsedSinceLoad >= 60 ? "flex" : "none" }}>
+            <BarChartFill className={styles.showDashboardButtonIcon} />
         </div>
+        <div className={styles.showDashboardText} ><p>Show Dashboard</p></div>
     </div > : null
 }
 
 
 /*
-            <Waypoint key={"Waypoint"} onEnter={loadFiveDogs} />
-            {postsFromDogImageArray(imgArray.slice(imgArray.length - 2), imgArray.length - 2)} */
+
 
 /*
 
