@@ -16,23 +16,23 @@ body {
 }
 
 h1 {
-  font-size: 72px;
+  font-size: 72px !important;
 }
 
 h2 {
-  font-size: 48px;
+  font-size: 48px !important;
 }
 
 h3 {
-  font-size: 36px;
+  font-size: 36px !important;
 }
 
 h4 {
-  font-size: 22px;
+  font-size: 22px !important;
 }
 
 h5 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 h3, h4 {
@@ -40,11 +40,11 @@ h3, h4 {
 }
 
 button {
-  font-size: 28px;
+  font-size: 28px !important;
 }
 
 .post {
-  height: 300px;
+  height: 300px !important;
 }
 
 .activeLink {
