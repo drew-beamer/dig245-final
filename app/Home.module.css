@@ -1,0 +1,27 @@
+.heroContainer {
+    background-image: linear-gradient(to bottom right, var(--primary-teal), var(--secondary-smokyblue));
+    border-radius: 50px;
+    display: flex;
+    min-height: 400px;
+}
+
+.heroContainerRow {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    color: var(--primary-offwhite);
+}
+
+.descriptionHeader {
+    margin-bottom: 15px;
+}
+
+.description {
+    margin-top: 60px;
+    min-height: 400px;
+}
+
+.description h4, .description h3 {
+    color: var(--primary-teal);
+}
+

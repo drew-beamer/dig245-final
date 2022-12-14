@@ -1,0 +1,58 @@
+/* Style the overlay */
+.wrapper {
+    height: calc(100vh - 60px);
+    padding: 5vh 2vw;
+    width: 100vw;
+    position: fixed;
+    z-index: 1;
+    top: 60px;
+    left: 0;
+    background-color: #000000d9;
+    overflow-x: hidden;
+}
+
+.content {
+    min-width: 50%;
+    max-width: 1000px;
+    max-height: 90%;
+    background-color: var(--primary-offwhite);
+    border-radius: 25px;
+    padding: 20px 40px;
+    animation-duration: 0.5s;
+    animation-name: fade;
+    animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+    overflow: scroll;
+}
+
+.closeButtonHolder {
+    display: flex;
+    justify-content: flex-end;
+    position: sticky;
+    width: 100%;
+    top: 0;
+}
+
+.closeButton {
+    font-size: 36px;
+}
+
+.closeButton:hover {
+    cursor: pointer;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.95, 0.95);
+    }
+
+    50% {
+        opacity: 0.9;
+        transform: scale(1.05, 1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
