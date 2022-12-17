@@ -3,8 +3,9 @@ The topic of filter bubbles, and targeted advertising through data collection re
 
 Hound is an application that emulates a social media site by allowing a user to interact with "posts" of five breeds of dogs. In the background, Hound keeps track of the number of images of each breed the user has liked and then uses this information to fetch and tailor the feed to the preferences of the user. Over time, the user is hopefully able to see that some dog breeds have been filtered out—demonstrating the topic of filter bubbles. A progress bar on the top of the screen displays the progress toward a pop-up appearing--which occurs after a minute of the user interacting with the feed. This pop-up shows the user how many images of each breed they have liked, along with how a very algorithm is able to tailor their feed based on this information. 
 
-
+## Links
 [Link to presentation on hound](https://docs.google.com/presentation/d/1TU7YlxyVhvRtcFZlhwbYrOqEDrz14ocmPB_1T3eqrYY/edit?usp=sharing)
+[Link to Figma](https://www.figma.com/file/OX58rUjpwgJN5ZeCQYIZ7E/DIG245-Final-%E2%80%94-Hound?node-id=0%3A1&t=RlolihD9BMrxsEKv-1)
 
 ## Running the App Locally (via Next.js documentation)Getting Started
 
