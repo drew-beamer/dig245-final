@@ -5,6 +5,7 @@ Hound is an application that emulates a social media site by allowing a user to 
 
 ## Links
 [Link to presentation on hound](https://docs.google.com/presentation/d/1TU7YlxyVhvRtcFZlhwbYrOqEDrz14ocmPB_1T3eqrYY/edit?usp=sharing)
+<br/>
 [Link to Figma](https://www.figma.com/file/OX58rUjpwgJN5ZeCQYIZ7E/DIG245-Final-%E2%80%94-Hound?node-id=0%3A1&t=RlolihD9BMrxsEKv-1)
 
 ## Running the App Locally (via Next.js documentation)Getting Started
